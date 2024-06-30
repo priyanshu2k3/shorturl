@@ -1,0 +1,64 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  verified    Boolean   @default(false)
+  password    String
+  salt        String
+  firstName   String
+  lastName    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  urls        Url[]
+  requestLogs RequestLog[]
+
+  @@map("users")
+}
+
+
+model Url {
+  id         Int         @id @default(autoincrement())
+  original   String
+  short      String      @unique
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  userId     Int
+  user       User        @relation(fields: [userId], references: [id])
+  requestLogs RequestLog[]
+}
+
+model RequestLog {
+  id             Int       @id @default(autoincrement())
+  ipAddress      String
+  userAgent      String
+  referer        String?
+  method         String
+  requestUrl     String
+  headers        Json
+  timestamp      DateTime  @default(now())
+  queryParams    Json
+  body           Json?
+  sessionId      String?
+
+  urlId          Int
+  url            Url       @relation(fields: [urlId], references: [id])
+
+  userId         Int
+  user           User      @relation(fields: [userId], references: [id])
+}
+
+
+
+// schemas/userSchema.js
