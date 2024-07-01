@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import {UserSignup} from "@/app/lib/zod"
 
 
 function Signup() {
@@ -16,14 +17,21 @@ function Signup() {
         
         e.preventDefault()
         //email, password, firstName, lastName
-        const data ={email,password,firstName,lastName}
+        const data:UserSignup ={email,password,firstName,lastName}
         console.log("request above")
-        var response = await axios.post('/api/signup', data);
-        console.log(response.data.cookie)
-        if (response.data.cookie){
-            console.log("reached here")
-            router.push('/home')
+
+        try {
+            var response = await axios.post('/api/signup', data);
+        console.log(response)
+        
+        if (response.status==201){
+            console.log("hello")
+            router.push('/signin')
         }
+        } catch (error) {
+            console.log(error)
+        }
+        
         return
     }
   return (

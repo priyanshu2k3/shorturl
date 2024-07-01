@@ -1,10 +1,9 @@
-// src/app/api/signup/route.ts
-
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
 import { userSignupSchema } from '@/app/lib/zod';
+const jwt = require('jsonwebtoken');
 
 const prisma = new PrismaClient();
 
@@ -45,7 +44,19 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ message: 'User created successfully', user: newUser }, { status: 201 });
+    
+    // const payload = {
+    //   id: newUser.id,
+    //   email: newUser.email,
+    // };
+    // const secretKey = process.env.secretKey
+    // const token = jwt.sign(payload, secretKey, { expiresIn: 3600 });
+    // console.log(token)
+    
+    // response.cookies.set("token",token)
+    // response.cookies.set('show-banner', 'false')
+    // return response
+     return NextResponse.json({ message: 'User created successfully' }, { status: 201 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
