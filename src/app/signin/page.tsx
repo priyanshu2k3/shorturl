@@ -2,12 +2,14 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { useRouter ,usePathname} from 'next/navigation';
 import {UserSignin} from "@/app/lib/zod"
 import { setCookie } from "cookies-next";
 
 
 function Signin() {
+    const pathname = usePathname()
+
     const router =useRouter();
     const [email,setEmail]=useState("")
     const [password,setPassword]=useState("")
@@ -24,7 +26,7 @@ function Signin() {
             
             await setCookie("token",response.data.token,{})
             
-            router.push('/home')
+            router.push('/')
             console.log("here")
         }
         return
@@ -32,7 +34,7 @@ function Signin() {
 
   
   return (
-    <section className="bg-white dark:bg-gray-900">
+    <section className="bg-white dark:bg-gray-900">{pathname}
     <div className=" container flex items-center justify-center min-h-screen px-6 mx-auto">
         <form className=" border border-gray-300 border-1 p-4 w-full max-w-md">
             <div className='text-white'>Logo</div>
