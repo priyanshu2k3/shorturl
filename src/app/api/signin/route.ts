@@ -12,7 +12,7 @@ export async function POST(request:NextRequest) {
     const body = await request.json();
     const validation =userSigninSchema.safeParse(body);
     if (!validation.success) {
-        return NextResponse.json({ message: 'Invalid input', errors: validation.error.errors }, { status: 400 });
+        return NextResponse.json({ message: 'Invalid input', errors: validation.error.errors }, { status: 400});
       }
     try {
             const user = await prisma.user.findUnique({
@@ -34,7 +34,7 @@ export async function POST(request:NextRequest) {
                     email: user.email,
                   };
                 const secretKey = process.env.secretKey
-                const token = jwt.sign(payload, secretKey, { expiresIn: 3600 });
+                const token = jwt.sign(payload, secretKey, { expiresIn: 3600*24*24*24});
                 console.log(token)
     
                 return (NextResponse.json({"msg":"signed in sucessfully",token}))

@@ -9,17 +9,23 @@ import { setCookie } from "cookies-next";
 
 function Signin() {
     const pathname = usePathname()
-
+    
     const router =useRouter();
     const [email,setEmail]=useState("")
     const [password,setPassword]=useState("")
+    
+   let  currentUrl=window.location.href.split("//")[1]
 
     const handleSubmit=async (e:any)=>{
         e.preventDefault()
         var data:UserSignin={email,password}
         
         // console.log({email,password})
-        var response = await axios.post('/api/signin', data);
+        var response = await axios.post('/api/signin', data,{ withCredentials: true });
+
+        if(response.data?.message =="'No Such User Exist'"){
+            router.push('/signup')
+        }
         
         console.log(response.data.token,response)
         if (response.data.token){
@@ -35,7 +41,7 @@ function Signin() {
   
   return (
     <section className="bg-white dark:bg-gray-900">{pathname}
-    <div className=" container flex items-center justify-center min-h-screen px-6 mx-auto">
+    <div className=" container flex items-center justify-center min-h-screen px-6 mx-auto">{currentUrl}
         <form className=" border border-gray-300 border-1 p-4 w-full max-w-md">
             <div className='text-white'>Logo</div>
 
@@ -63,7 +69,7 @@ function Signin() {
 
             <div className="mt-6">
                 <button onClick={handleSubmit} className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
-                    Sign in
+                    Sign in 
                 </button>
 
                 <p className="mt-4 text-center text-gray-600 dark:text-gray-400">or sign in with</p>

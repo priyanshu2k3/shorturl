@@ -13,9 +13,21 @@ export const userSigninSchema= z.object({
 })
 
 export const urlCreationSchema = z.object({
-    original: z.string().url({ message: 'Invalid URL format' }),
-    userId: z.string().min(1,{ message: 'User ID must be an string' })
+    original: z.string().url({ message: 'Invalid URL format' })
   });
+
+export const requestLogSchema = z.object({
+  id: z.number().int().optional(), // ID is auto-incremented and optional when creating a new log
+  ipAddress: z.string().nullable().optional(), // Optional and nullable string
+  userAgent: z.string().nullable().optional(), // Optional and nullable string
+  referer: z.string().nullable().optional(), // Optional and nullable string
+  timestamp: z.date().optional(), // Date, optional since it defaults to now
+  short: z.string(), // Required string for the URL short code
+  userId: z.number().int(), // Required integer for user ID
+});
+
+
+
 
   export type UserSignup = z.infer<typeof userSignupSchema>;
   export type UserSignin = z.infer<typeof userSigninSchema>;

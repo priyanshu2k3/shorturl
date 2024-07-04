@@ -26,7 +26,6 @@ model User {
   @@map("users")
 }
 
-
 model Url {
   id         Int         @id @default(autoincrement())
   original   String
@@ -37,27 +36,26 @@ model Url {
   userId     Int
   user       User        @relation(fields: [userId], references: [id])
   requestLogs RequestLog[]
+
+  @@unique([userId, original])
 }
 
 model RequestLog {
   id             Int       @id @default(autoincrement())
-  ipAddress      String
-  userAgent      String
+  ipAddress      String?
+  userAgent      String?
   referer        String?
-  method         String
-  requestUrl     String
-  headers        Json
   timestamp      DateTime  @default(now())
-  queryParams    Json
-  body           Json?
-  sessionId      String?
+  
 
-  urlId          Int
-  url            Url       @relation(fields: [urlId], references: [id])
+  short          String
+  url            Url       @relation(fields: [short], references: [short])
 
   userId         Int
   user           User      @relation(fields: [userId], references: [id])
 }
+
+
 
 
 

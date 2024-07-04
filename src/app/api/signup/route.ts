@@ -3,6 +3,8 @@ import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
 import { userSignupSchema } from '@/app/lib/zod';
+
+
 const jwt = require('jsonwebtoken');
 
 const prisma = new PrismaClient();
@@ -40,10 +42,10 @@ export async function POST(req: NextRequest) {
         password: hashedPassword,
         salt,
         firstName,
-        lastName
+        lastName,
+  
       },
     });
-
     
     // const payload = {
     //   id: newUser.id,

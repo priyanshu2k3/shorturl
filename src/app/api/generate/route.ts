@@ -1,37 +1,70 @@
 import { NextRequest, NextResponse } from "next/server";
 import { nanoid } from "nanoid";
 import Hashids from 'hashids'
-import { shortid } from "@/app/lib/shortid"; //external function made to create short url 
+import { shortid } from "@/app/lib/shortid"; 
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 import { urlCreationSchema } from "@/app/lib/zod"
 
+import {verifyAndDecodeToken} from "@/app/lib/jwt"
+const secretKey = process.env.secretKey
+//import { headers } from "next/headers";
+
 
 export async function POST(request:NextRequest) {
+  
+
+
+const coockie=request.headers.get("cookie")?.split("=")[1] ||""
+const jwtResult = verifyAndDecodeToken(coockie);
+
+if (!jwtResult.valid ) {
+  console.log(jwtResult,jwtResult.valid!)
+  return NextResponse.json({message:"unauthorised access"},{status:401})
+}
+
+
   const body = await request.json();
-  const sid=shortid(body.userId);
-  
-  
+  const { original} = body;
+  const userId=jwtResult.decoded.id
+  console.log(userId)
+  const sid=shortid(userId);
+
+
   try {
- const validation = urlCreationSchema.safeParse(body);
-    console.log(body)
+    const validation = urlCreationSchema.safeParse(body);
+
     if (!validation.success) {
-        console.log("reached here2")
       return NextResponse.json({ message: 'Invalid input', errors: validation.error.errors }, { status: 400 });
     }
-    console.log("reached here")
-    const dbresponse = await prisma.Url.create({
-        data: {
-            original:body.original,
-            short:sid,
-            userId:parseInt(body.userId),
+
+    
+    const existingUrl = await prisma.url.findUnique({
+      where: {
+        userId_original: {
+          userId: parseInt(userId),
+          original,
         },
-      });
-      return (NextResponse.json({ msg: "created the shorturl sucessfully","sid":sid,"dbresponse":dbresponse}));
+      },
+    });
+
+    if (existingUrl) {
+      return NextResponse.json({ message: 'URL already exists', "sid": existingUrl.short ,"dbresponse":existingUrl});
     }
-   catch (error) {
-   console.log(error)
-    return (NextResponse.json({ msg: "problem in creating the url try again","error":error}))
+
+    // Generate a short URL (you can replace this with your own logic)
+
+    const dbresponse = await prisma.url.create({
+      data: {
+        original,
+        "short":sid,
+        userId: parseInt(userId),
+      },
+    });
+
+    return (NextResponse.json({ msg: "created the shorturl sucessfully","sid":sid,"dbresponse":dbresponse}));
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ message: 'Problem in creating the URL, try again', error }, { status: 500 });
   }
-  
 }

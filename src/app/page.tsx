@@ -1,23 +1,26 @@
 "use client"
 import { useState } from 'react';
 import axios from 'axios';
-import { useRouter,usePathname } from 'next/navigation';
+import { useRouter} from 'next/navigation';
 
 
 
 const Home = () => {
   const router =useRouter();
-  const pathname = usePathname()
   const [url, setUrl] = useState('');
   const [shortenedUrl, setShortenedUrl] = useState('');
-    
+  const currentUrl = typeof window !== 'undefined' ? window.location.host + '/api/$' : '';
+
   const handleSubmit = async (e:any) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/generate', { "original":url,"userId":"1"});
-      
-      setShortenedUrl(response.data.sid);
+      console.log("domain",currentUrl)
+      const response = await axios.post('/api/generate', { "original":url});
+
+      if(!response){alert("some error occured")}
+      setShortenedUrl(currentUrl+response.data.sid);
     } catch (error) {
+      alert("some error occured You can check the console ")
       console.error(error);
     }
   };
@@ -28,7 +31,7 @@ const Home = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">{pathname}
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
         <h1 className="text-2xl font-bold mb-4 text-center">URL Shortener</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
