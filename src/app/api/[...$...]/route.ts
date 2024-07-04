@@ -41,7 +41,7 @@ export async function GET(request:NextRequest) {
       data:{ipAddress,userAgent,referer,timestamp,short,userId},
     })
     .then(() => resolve('Data saved successfully'))
-    .catch((error) => {
+    .catch((error:Error) => {
       console.log('failed');
       reject(error);
     });
