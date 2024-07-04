@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import prisma from "@/app/lib/prisma"
 import bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
 import { userSignupSchema } from '@/app/lib/zod';
 
 
 const jwt = require('jsonwebtoken');
-
-const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   try {

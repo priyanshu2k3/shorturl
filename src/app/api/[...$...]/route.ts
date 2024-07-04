@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from 'next/headers';
-import { PrismaClient } from '@prisma/client';
+import prisma from "@/app/lib/prisma"
 import { date } from "zod";
 import { requestLogSchema } from "@/app/lib/zod";
-const prisma = new PrismaClient();
+
 
 
 export async function GET(request:NextRequest) {
