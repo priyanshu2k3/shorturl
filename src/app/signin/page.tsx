@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import axios from 'axios';
 import { useRouter ,usePathname} from 'next/navigation';
@@ -14,8 +14,6 @@ function Signin() {
     const [email,setEmail]=useState("")
     const [password,setPassword]=useState("")
     
-   let  currentUrl=window.location.href.split("//")[1]
-
     const handleSubmit=async (e:any)=>{
         e.preventDefault()
         var data:UserSignin={email,password}
@@ -40,8 +38,8 @@ function Signin() {
 
   
   return (
-    <section className="bg-white dark:bg-gray-900">{pathname}
-    <div className=" container flex items-center justify-center min-h-screen px-6 mx-auto">{currentUrl}
+    <section className="bg-white dark:bg-gray-900">
+    <div className=" container flex items-center justify-center min-h-screen px-6 mx-auto">
         <form className=" border border-gray-300 border-1 p-4 w-full max-w-md">
             <div className='text-white'>Logo</div>
 
