@@ -2,15 +2,23 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter} from 'next/navigation';
+import { cookies } from "next/headers";
 
 
 
 const Home = () => {
+
+
   const router =useRouter();
+
+  // const cookieStore = cookies();
+  // const token= cookieStore.get("token");
+  // if (!token){
+  //   router.push("/signin")}
   const [url, setUrl] = useState('');
+
   const [shortenedUrl, setShortenedUrl] = useState('');
   const currentUrl = typeof window !== 'undefined' ? window.location.host + '/api/$' : '';
-
   const handleSubmit = async (e:any) => {
     e.preventDefault();
     try {

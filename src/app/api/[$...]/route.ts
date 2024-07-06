@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from 'next/headers';
-import prisma from "@/app/lib/prisma"
+// import prisma from "@/app/lib/prisma"
+import prisma from "../../lib/prisma"
 import { date } from "zod";
-import { requestLogSchema } from "@/app/lib/zod";
+// import { requestLogSchema } from "@/app/lib/zod";
+import {requestLogSchema}  from "../../lib/zod"
 
 
 
