@@ -7,8 +7,6 @@ CREATE TABLE "users" (
     "salt" TEXT NOT NULL,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
-    "gender" TEXT NOT NULL,
-    "dateOfBirth" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -30,17 +28,11 @@ CREATE TABLE "Url" (
 -- CreateTable
 CREATE TABLE "RequestLog" (
     "id" SERIAL NOT NULL,
-    "ipAddress" TEXT NOT NULL,
-    "userAgent" TEXT NOT NULL,
+    "ipAddress" TEXT,
+    "userAgent" TEXT,
     "referer" TEXT,
-    "method" TEXT NOT NULL,
-    "requestUrl" TEXT NOT NULL,
-    "headers" JSONB NOT NULL,
     "timestamp" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "queryParams" JSONB NOT NULL,
-    "body" JSONB,
-    "sessionId" TEXT,
-    "urlId" INTEGER NOT NULL,
+    "short" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "RequestLog_pkey" PRIMARY KEY ("id")
@@ -52,11 +44,14 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 -- CreateIndex
 CREATE UNIQUE INDEX "Url_short_key" ON "Url"("short");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Url_userId_original_key" ON "Url"("userId", "original");
+
 -- AddForeignKey
 ALTER TABLE "Url" ADD CONSTRAINT "Url_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "RequestLog" ADD CONSTRAINT "RequestLog_urlId_fkey" FOREIGN KEY ("urlId") REFERENCES "Url"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "RequestLog" ADD CONSTRAINT "RequestLog_short_fkey" FOREIGN KEY ("short") REFERENCES "Url"("short") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "RequestLog" ADD CONSTRAINT "RequestLog_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
