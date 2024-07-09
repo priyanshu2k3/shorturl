@@ -15,11 +15,12 @@ export async function POST(request:NextRequest) {
   
 
 
-const coockie=request.headers.get("cookie")?.split("=")[1] ||""
-const jwtResult = verifyAndDecodeToken(coockie);
+const coockies=request.headers.get("cookie") ||""
+console.log(coockies)
+const jwtResult = verifyAndDecodeToken(coockies);
 
-if (!jwtResult.valid ) {
-  console.log(coockie,jwtResult,!jwtResult.valid)
+if (!jwtResult || !jwtResult.valid ) {
+  // console.log(coockie,jwtResult,!jwtResult.valid)
   return NextResponse.json({message:"unauthorised access"},{status:401})
 }
 
