@@ -19,7 +19,7 @@ const coockie=request.headers.get("cookie")?.split("=")[1] ||""
 const jwtResult = verifyAndDecodeToken(coockie);
 
 if (!jwtResult.valid ) {
-  console.log(jwtResult,jwtResult.valid!)
+  console.log(coockie,jwtResult,!jwtResult.valid)
   return NextResponse.json({message:"unauthorised access"},{status:401})
 }
 
