@@ -8,7 +8,7 @@ import useSWR from 'swr';
 
 const Analytics: React.FC = () => {
    
-    const currentPath=window.location.pathname
+    const currentPath= typeof window !== 'undefined' ?window.location.pathname:''
     console.log(currentPath)
     const { data, error, isLoading } = useSWR("/api/"+currentPath, fetcher)
     if (error) return (<span><Navbar/><div>failed to load</div></span>)
