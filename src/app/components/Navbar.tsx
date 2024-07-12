@@ -16,7 +16,8 @@ const Navbar: React.FC = () => {
       };
       const handleLogout=(e:any)=>{
         console.log("logout")
-        document?.cookie.split(";").forEach(cookie => {
+        var cookie=typeof document  !== 'undefined'?document.cookie:""
+        cookie.split(";").forEach(cookie => {
             document.cookie = cookie.replace(/^ +/, "")
               .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);
           });
