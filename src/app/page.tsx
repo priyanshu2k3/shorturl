@@ -2,8 +2,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter} from 'next/navigation';
-import { cookies } from "next/headers";
-
+import Navbar from './components/Navbar';
 
 
 const Home = () => {
@@ -11,10 +10,11 @@ const Home = () => {
 
   const router =useRouter();
 
-  // const cookieStore = cookies();
-  // const token= cookieStore.get("token");
-  // if (!token){
-  //   router.push("/signin")}
+  const cookieStore = document.cookie.includes("token");
+  const token= cookieStore;
+  console.log(token)
+  if (!token){
+    router.push("/signin")}
   const [url, setUrl] = useState('');
 
   const [shortenedUrl, setShortenedUrl] = useState('');
@@ -39,12 +39,16 @@ const Home = () => {
   };
 
   return (
+    <span>
+      <Navbar/>
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
         <h1 className="text-2xl font-bold mb-4 text-center">URL Shortener</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="url" className="block text-sm font-medium text-gray-700">Original URL</label>
+            <label htmlFor="url" className="block text-sm font-medium text-gray-700">Original URL </label>
+            <label className='text-green-700'>eg:https://example.com or http://example.com </label>
             <input
               type="url"
               id="url"
@@ -77,6 +81,7 @@ const Home = () => {
         )}
       </div>
     </div>
+    </span>
   );
 };
 

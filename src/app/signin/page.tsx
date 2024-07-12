@@ -22,6 +22,7 @@ function Signin() {
         var response = await axios.post('/api/signin', data,{ withCredentials: true });
 
         if(response.data?.message =="'No Such User Exist'"){
+            alert("Invalid UserEmail or password")
             router.push('/signup')
         }
         
@@ -31,7 +32,6 @@ function Signin() {
             await setCookie("token",response.data.token,{})
             
             router.push('/')
-            console.log("here")
         }
         return
     }

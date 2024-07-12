@@ -17,18 +17,22 @@ function Signup() {
         
         e.preventDefault()
         //email, password, firstName, lastName
+        if (email==="" || password==="" || firstName==="" ||lastName===""){
+            alert("all fields are required")
+            return
+        }
         const data:UserSignup ={email,password,firstName,lastName}
-        console.log("request above")
 
         try {
             var response = await axios.post('/api/signup', data);
         console.log(response)
-        
         if (response.status==201){
             console.log("hello")
             router.push('/signin')
         }
         } catch (error) {
+          alert("email already in use try with some other email for more details check console")
+          router.push("/signin")
             console.log(error)
         }
         
