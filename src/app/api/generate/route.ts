@@ -14,12 +14,11 @@ const secretKey = process.env.secretKey
 export async function POST(request:NextRequest) {
   
 
-
 const coockies=request.headers.get("cookie") ||""
 console.log(coockies)
-const jwtResult = verifyAndDecodeToken(coockies);
+const jwtResult= verifyAndDecodeToken(coockies);
 
-if (!jwtResult || !jwtResult.valid ) {
+if (!(jwtResult.valid)) {
   // console.log(coockie,jwtResult,!jwtResult.valid)
   return NextResponse.json({message:"unauthorised access"},{status:401})
 }

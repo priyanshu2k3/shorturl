@@ -5,22 +5,24 @@ const secretKey = process.env.secretKey;
 
 // Function to verify and decode the JWT token
 export const verifyAndDecodeToken = (tokens:string) => {
+  var decoded
   try {
     //EXTRACTING TOKEN
     const cookies = tokens.split(';');
     for (let cookie of cookies) {
       const [name, value] = cookie.split('=');
       if (name === "token") {
+        console.log(name,value,"in the jwtverify")
     // Verify the token
-    const decoded = jwt.verify(value, secretKey);
+     decoded = jwt.verify(value, secretKey);
+    console.log(name,value,"inthe jwtverify",decoded)
     return ({ valid: true, decoded })}
-    else{
-      throw new Error('Token not found');
-    }
+  
   }
+  throw new Error('Token not found')
   
 } catch (error) {
     // Token is invalid or expired
-    return { valid: false, error};
+    return { valid: false,decoded};
   }
 };
