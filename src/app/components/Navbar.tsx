@@ -1,30 +1,38 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter} from 'next/navigation';
 
 const Navbar: React.FC = () => {
     const router =useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [cookies, setCookies] = useState<string | null>(null);
+
 
     // Function to handle mouse enter and leave events for the dropdown
-    const handleDropdownMouseEnter = () => {
-        setIsOpen(true);
-      };
-    
-      const handleDropdownMouseLeave = () => {
-        setIsOpen(false);
-      };
-      const handleLogout=(e:any)=>{
-        console.log("logout");
-        if (typeof document !== 'undefined') {
-          document.cookie.split(";").forEach(cookie => {
-            document.cookie = cookie.replace(/^ +/, "")
-              .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);
-          });
-        }
-        router.push("/signin");
+    useEffect(() => {
+      if (typeof document !== 'undefined') {
+        setCookies(document.cookie);
       }
-
+    }, []);
+  
+    const handleDropdownMouseEnter = () => {
+      setIsOpen(true);
+    };
+  
+    const handleDropdownMouseLeave = () => {
+      setIsOpen(false);
+    };
+  
+    const handleLogout = (e: any) => {
+      console.log("logout");
+      if (typeof document !== 'undefined') {
+        cookies?.split(";").forEach(cookie => {
+          document.cookie = cookie.replace(/^ +/, "")
+            .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);
+        });
+      }
+      router.push("/signin");
+    };
   return (
     <nav className="bg-blue-600 p-4 shadow-md" onMouseLeave={handleDropdownMouseLeave}>
       <div className="container mx-auto flex justify-between items-center">
