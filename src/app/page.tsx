@@ -9,18 +9,19 @@ const Home = () => {
 
 
   const router =useRouter();
-  const [cookies, setCookies] = useState<string>("");
+
+  const [cookies, setCookies] = useState<string | null>(null);
 
   useEffect(() => {
-    if (typeof document !== 'undefined') {
+    if (typeof document !== 'undefined' && cookies !== null) {
       setCookies(document.cookie);
+      if(cookies.includes("token")){
+        router.push("/signin")
+      }
     }
   }, []);
 
-  const token = cookies.includes("token");
-  console.log(token)
-  if (!token){
-    router.push("/signin")}
+ 
   const [url, setUrl] = useState('');
 
   const [shortenedUrl, setShortenedUrl] = useState('');
