@@ -7,7 +7,7 @@ const secretKey = process.env.secretKey;
 export const verifyAndDecodeToken = (tokens:string) => {
   try {
     //EXTRACTING TOKEN
-    const cookies = tokens.split('; ');
+    const cookies = tokens.split(';');
     for (let cookie of cookies) {
       const [name, value] = cookie.split('=');
       if (name === "token") {
