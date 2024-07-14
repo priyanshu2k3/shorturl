@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter} from 'next/navigation';
 import Navbar from './components/Navbar';
@@ -9,9 +9,15 @@ const Home = () => {
 
 
   const router =useRouter();
+  const [cookies, setCookies] = useState<string>("");
 
-  const cookieStore = document.cookie.includes("token");
-  const token= cookieStore;
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      setCookies(document.cookie);
+    }
+  }, []);
+
+  const token = cookies.includes("token");
   console.log(token)
   if (!token){
     router.push("/signin")}
