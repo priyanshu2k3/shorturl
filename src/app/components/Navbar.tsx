@@ -15,13 +15,14 @@ const Navbar: React.FC = () => {
         setIsOpen(false);
       };
       const handleLogout=(e:any)=>{
-        console.log("logout")
-        var cookie=typeof document  !== 'undefined'?document.cookie:""
-        cookie.split(";").forEach(cookie => {
+        console.log("logout");
+        if (typeof document !== 'undefined') {
+          document.cookie.split(";").forEach(cookie => {
             document.cookie = cookie.replace(/^ +/, "")
               .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);
           });
-          router.push("/signin")
+        }
+        router.push("/signin");
       }
 
   return (
