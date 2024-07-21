@@ -10,16 +10,19 @@ const Home = () => {
 
   const router =useRouter();
 
-  const [cookies, setCookies] = useState<string | null>(null);
+  const [cookies, setCookies] = useState<string>("");
 
   useEffect(() => {
-    if (typeof document !== 'undefined' && cookies !== null) {
+    
+    if (typeof document !== 'undefined') {
+      const allCookies=document.cookie
       setCookies(document.cookie);
-      if(cookies.includes("token")){
+   
+      if(!(allCookies.includes("token"))){
         router.push("/signin")
       }
     }
-  }, []);
+  }, [cookies]);
 
  
   const [url, setUrl] = useState('');
