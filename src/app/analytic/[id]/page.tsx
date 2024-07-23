@@ -9,6 +9,9 @@ import useSWR from 'swr';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 
+import DeviceType from "@/components/DeviceType"
+import Test from "@/components/Legends"
+
 const Analytics: React.FC = () => {
    
     const currentPath= typeof window !== 'undefined' ?window.location.pathname:''
@@ -41,6 +44,9 @@ const Analytics: React.FC = () => {
   
     return (
       <span><Navbar/>
+      <div className='w-1/4 mx-auto'><DeviceType props={data}/>
+      </div>
+      
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Analytics</h1>
         <button

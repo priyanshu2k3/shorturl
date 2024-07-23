@@ -21,8 +21,9 @@ function Signin() {
         
         // console.log({email,password})
         var response = await axios.post('/api/signin', data,{ withCredentials: true });
+        console.log(response.data.msg)
 
-        if(response.data?.message =="'No Such User Exist'"){
+        if(response.data?.msg ==='No Such User Exist' || response.data?.msg ==="Wrong Email or PassWord"){
             alert("Invalid UserEmail or password")
             router.push('/signup')
         }

@@ -6,6 +6,7 @@ import {verifyAndDecodeToken} from "@/app/lib/jwt"
 
 
 export async function GET(request:NextRequest,{ params }: { params: { query: string } }) {
+  console.log("analytics called")
 const short = params.query
 // console.log(short,"short",params)
 const coockies=request.headers.get("cookie") ||""
