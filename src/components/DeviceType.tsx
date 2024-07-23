@@ -31,7 +31,6 @@ export default function DeviceType(props:any) {
     let desk=0
     const data=props.props
    
-    if (!data){return(<div>can not display graph  </div>)}
     for (let i = 0; i < data.length; i++) {
         if (data[i].userAgent.includes("Android")){++mob}
         else{++desk}
